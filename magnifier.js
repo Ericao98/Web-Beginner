@@ -56,7 +56,7 @@ window.onload = function()
     width = canvas.clientWidth; height = canvas.clientHeight;
     context = canvas.getContext('2d');
     img = new Image();
-    scaler = new Scale(2, 150, 0, 0);
+    scaler = new Scale(2, 80, 0, 0);
     img.src = 'somePicture.jpg';
     img.onload = function() { context.drawImage(img, 0, 0); };
     canvas.onmousemove = function(e)
@@ -75,7 +75,6 @@ window.onload = function()
     window.onkeydown = function(e)
     {
         e.preventDefault();
-        // debugger;
         if (e.keyCode == 38)
             scaler.changeRadius(true);
         else if (e.keyCode == 40)
