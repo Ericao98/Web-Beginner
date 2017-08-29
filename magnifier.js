@@ -57,7 +57,7 @@ window.onload = function()
     context = canvas.getContext('2d');
     img = new Image();
     scaler = new Scale(2, 150, 0, 0);
-    img.src = '../image/20170804121308136.jpg';
+    img.src = 'somePicture.jpg';
     img.onload = function() { context.drawImage(img, 0, 0); };
     canvas.onmousemove = function(e)
     {
