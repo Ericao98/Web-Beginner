@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Controlable Cube Demo</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        .stage
+        {
+            position: absolute;
+            left: 450px;
+            perspective: 1000px;
+        }
+        .container
+        {
+            width: 500px;
+            height: 500px;
+            /*background-color: yellow;*/
+            transform-style: preserve-3d;
+            transform-origin: 50% 50% 75px;
+            transform: rotateX(-20deg) rotateY(-20deg);
+            /*-webkit-animation: rotate-frame infinite 8s linear;*/
+        }
+        @keyframes rotate-frame
+        {
+            0%
+            {
+                transform: rotateX(0deg) rotateY(0deg);
+            }
+            25%
+            {
+                transform: rotateX(90deg) rotateY(90deg);
+            }
+            50%
+            {
+                transform: rotateX(180deg) rotateY(180deg);
+            }
+            75%
+            {
+                transform: rotateX(270deg) rotateY(270deg);
+            }
+            100%
+            {
+                transform: rotateX(360deg) rotateY(360deg);
+            }
+        }
+        .side
+        {
+            width: 150px;
+            height: 150px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+            line-height: 150px;
+            text-align: center;
+        }
+        .top
+        {
+            position: absolute;
+            left: 150px;
+            transform: rotateX(-90deg);
+            transform-origin: bottom;
+            background-color: lightblue;
+            opacity: 0.8;
+        }
+        .bottom
+        {
+            position: absolute;
+            top: 300px;
+            left: 150px;
+            transform: rotateX(90deg);
+            transform-origin: top;
+            background-color: lightblue;
+            /*opacity: 0.8;*/
+        }
+        .front
+        {
+            position: absolute;
+            top: 150px;
+            left: 150px;
+            transform: translateZ(150px);
+            background-color: lightblue;
+            /*opacity: 0.8;*/
+        }
+        .back
+        {
+            position: absolute;
+            top: 150px;
+            left: 150px;
+            background-color: lightblue;
+            /*opacity: 0.8;*/
+        }
+        .left
+        {
+            position: absolute;
+            top: 150px;
+            transform: rotateY(90deg);
+            transform-origin: right;
+            background-color: lightblue;
+            /*opacity: 0.8;*/
+        }
+        .right
+        {
+            position: absolute;
+            top: 150px;
+            left: 300px;
+            transform: rotateY(-90deg);
+            transform-origin: left;
+            background-color: lightblue;
+            /*opacity: 0.8;*/
+        }
+    </style>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
+    <script type="text/javascript">
+        var ismove = false;
+        var prex = 0, prey = 0, nowx = 0, nowy = 0, degx = -20, degy = -20;
+        var topdeg = -90;
+
+        var mouse_down, touch_start;
+        var mouse_up, touch_end;
+        mouse_down = touch_start = function()
+        {
+            ismove = true;
+        }
+
+        function mouse_move(e)
+        {
+            if (ismove)
+            {
+                nowx = e.pageX;
+                nowy = e.pageY;
+                var diffx = nowx - prex, diffy = nowy - prey;
+                degx += diffx;
+                degy -= diffy;
+                $('.container').css('transform', 'rotateY('+degx+'deg) rotateX('+degy+'deg)');
+                prex = nowx;
+                prey = nowy;
+            }
+            else
+            {
+                prex = e.pageX;
+                prey = e.pageY;
+            }
+        }
+
+        function touch_move(e)
+        {
+            e.preventDefault();
+            e = e.changedTouches[0];
+            if (ismove)
+            {
+                nowx = e.pageX;
+                nowy = e.pageY;
+                var diffx = nowx - prex, diffy = nowy - prey;
+                degx += diffx;
+                degy -= diffy;
+                $('.container').css('transform', 'rotateY('+degx+'deg) rotateX('+degy+'deg)');
+                prex = nowx;
+                prey = nowy;
+            }
+            else
+            {
+                prex = e.pageX;
+                prey = e.pageY;
+            }
+        }
+
+        mouse_up = touch_end = function()
+        {
+            ismove = false;
+        }
+
+        function toggle()
+        {
+            // if (topdeg == -70)
+            //     $('.top').css('title', '关闭方盒');
+            // else
+            //     $('.top').css('title', '开启方盒');
+            topdeg = (topdeg == -70 ? -90 : -70)
+            $('.top').css('transform', 'rotateX('+topdeg+'deg)');
+        }
+
+        window.onload = function()
+        {
+            var stage = document.getElementsByClassName('stage')[0];
+            var top = document.getElementsByClassName('top')[0];
+            stage.addEventListener('mousedown', mouse_down, false);
+            stage.addEventListener('mousemove', mouse_move, false);
+            stage.addEventListener('mouseup', mouse_up, false);
+            top.addEventListener('mousedown', toggle, false);
+
+            stage.addEventListener('touchstart', touch_start, false);
+            stage.addEventListener('touchmove', touch_move, false);
+            stage.addEventListener('touchend', touch_end, false);
+        };
+    </script>
+</head>
+<body>
+    <div class="stage">
+        <div style="text-align: center;"><h2>Rotating Cube Demo (Pure CSS)</h2></div>
+        <div class="container">
+            <div class="top side" title="点击开启"></div>
+            <div class="bottom side"></div>
+            <div class="front side"></div>
+            <div class="back side"></div>
+            <div class="left side"></div>
+            <div class="right side"></div>
+        </div>
+    </div>
+</body>
+</html>
